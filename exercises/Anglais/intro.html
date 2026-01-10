@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anglais - Exercices</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --ink: #e8e6e3;
+        --muted: #b7b3ad;
+        --accent: #8ab4f8;
+        --card: #171a21;
+        --border: #2a2f3a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Serif", "Georgia", serif;
+        background: var(--bg);
+        color: var(--ink);
+        padding: 32px;
+      }
+      header { max-width: 820px; margin: 0 auto 24px; }
+      h1 { margin: 0 0 6px; font-size: 2rem; }
+      p { margin: 0; color: var(--muted); }
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        max-width: 980px;
+        margin: 0 auto;
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 18px;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 160ms ease, border-color 160ms ease;
+      }
+      .card:hover { transform: translateY(-4px); border-color: var(--accent); }
+      .card h2 { margin: 0 0 8px; font-size: 1.15rem; }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: #121419;
+        font-size: 0.85rem;
+        margin-top: 10px;
+        color: var(--muted);
+      }
+      a { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p><a href="../../index.html">Retour accueil</a></p>
+      <h1>&#9998; Anglais - Exercices</h1>
+      <p>Choisis un point de grammaire. Un fichier = un exercice.</p>
+    </header>
+    <section class="grid">
+      <a class="card" href="presenter-3e-personne.html">
+        <h2>Presenter quelqu'un a la 3e personne</h2>
+        <p>Pratiquer He/She + be et les presentations.</p>
+        <span class="pill">He / She</span>
+      </a>
+      <a class="card" href="wh-yes-no.html">
+        <h2>WH questions et Yes/No questions</h2>
+        <p>Reconnaissance et choix des bonnes questions.</p>
+        <span class="pill">What / Where / How</span>
+      </a>
+      <a class="card" href="reponses-completes-breves.html">
+        <h2>Reponses completes et breves</h2>
+        <p>Choisir la reponse courte ou complete.</p>
+        <span class="pill">Yes / No</span>
+      </a>
+      <a class="card" href="there-is-are.html">
+        <h2>Il y a - There is / There are</h2>
+        <p>Singulier, pluriel, negatif.</p>
+        <span class="pill">There is / are</span>
+      </a>
+      <a class="card" href="prepositions-lieu.html">
+        <h2>Prepositions de lieu</h2>
+        <p>In, on, under, between, next to...</p>
+        <span class="pill">Place</span>
+      </a>
+    </section>
+  </body>
+</html>

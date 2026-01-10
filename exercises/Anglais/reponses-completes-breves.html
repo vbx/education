@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Anglais - Reponses</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --ink: #e8e6e3;
+        --muted: #b7b3ad;
+        --accent: #8ab4f8;
+        --card: #171a21;
+        --border: #2a2f3a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Serif", "Georgia", serif;
+        background: var(--bg);
+        color: var(--ink);
+        padding: 32px;
+      }
+      a { color: var(--accent); }
+      header { max-width: 860px; margin: 0 auto 20px; }
+      h1 { margin: 0 0 6px; font-size: 2rem; }
+      p { margin: 0; color: var(--muted); }
+      main { max-width: 860px; margin: 0 auto; }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 18px;
+        margin-bottom: 16px;
+      }
+      .row { display: grid; gap: 10px; margin-top: 10px; }
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid var(--border);
+        background: #121419;
+        color: var(--ink);
+      }
+      .feedback { color: var(--muted); margin-top: 8px; }
+      .feedback.good { color: #8bd99f; }
+      .feedback.bad { color: #f28b82; }
+      button {
+        padding: 10px 14px;
+        font-size: 1rem;
+        border: 1px solid var(--border);
+        background: #121419;
+        color: var(--ink);
+        cursor: pointer;
+      }
+      button:hover { border-color: var(--accent); }
+      .result { font-weight: bold; color: var(--muted); margin-top: 10px; }
+      .actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+      .series { color: var(--muted); font-size: 0.9rem; }
+    </style>
+  </head>
+  <body>
+    <header>
+      <p><a href="intro.html">Retour Anglais</a></p>
+      <h1>&#10004; Reponses completes et breves</h1>
+      <p>Choisis la reponse courte puis la reponse complete.</p>
+    </header>
+    <main>
+      <div class="card">
+        <strong id="q1-title"></strong>
+        <div class="row">
+          <label for="q1s">Reponse breve</label>
+          <select id="q1s"></select>
+          <label for="q1f">Reponse complete</label>
+          <select id="q1f"></select>
+        </div>
+      </div>
+      <div class="card">
+        <strong id="q2-title"></strong>
+        <div class="row">
+          <label for="q2s">Reponse breve</label>
+          <select id="q2s"></select>
+          <label for="q2f">Reponse complete</label>
+          <select id="q2f"></select>
+        </div>
+      </div>
+      <div class="card">
+        <strong id="q3-title"></strong>
+        <div class="row">
+          <label for="q3s">Reponse breve</label>
+          <select id="q3s"></select>
+          <label for="q3f">Reponse complete</label>
+          <select id="q3f"></select>
+        </div>
+      </div>
+      <div class="actions">
+        <button id="check">Verifier</button>
+        <button id="next">Autre serie</button>
+        <span class="series" id="series"></span>
+      </div>
+      <p class="result" id="result" aria-live="polite"></p>
+    </main>
+    <script>
+      const sets = [
+        [
+          {
+            title: "Question: Is he from Dublin?",
+            short: {
+              options: ["Yes, he is.", "Yes, he does.", "No, he is not.", "No, she is not."],
+              answer: "Yes, he is.",
+              explain: "Reponse breve: Yes + pronom + auxiliaire be.",
+            },
+            full: {
+              options: ["Yes, he is from Dublin.", "Yes, he from Dublin.", "No, he is from Dublin.", "Yes, she is from Dublin."],
+              answer: "Yes, he is from Dublin.",
+              explain: "Reponse complete: on reprend toute l'information.",
+            },
+          },
+          {
+            title: "Question: Is she Australian?",
+            short: {
+              options: ["No, she is not.", "No, she does not.", "Yes, she is.", "Yes, she does."],
+              answer: "No, she is not.",
+              explain: "Reponse breve negative: No + pronom + is not.",
+            },
+            full: {
+              options: ["No, she is not Australian.", "No, she is Australian.", "Yes, she is not Australian.", "No, she does not Australian."],
+              answer: "No, she is not Australian.",
+              explain: "Reponse complete negative: No + sujet + is not + complement.",
+            },
+          },
+          {
+            title: "Question: Is his name Jake?",
+            short: {
+              options: ["Yes, it is.", "Yes, he is.", "No, it is not.", "No, he is not."],
+              answer: "Yes, it is.",
+              explain: "Pour 'his name', on repond avec it is.",
+            },
+            full: {
+              options: ["Yes, his name is Jake.", "Yes, his name Jake.", "No, his name is Jake.", "Yes, he name is Jake."],
+              answer: "Yes, his name is Jake.",
+              explain: "Reponse complete avec le nom en entier.",
+            },
+          },
+        ],
+        [
+          {
+            title: "Question: Is she from Sydney?",
+            short: {
+              options: ["Yes, she is.", "Yes, she does.", "No, she is not.", "No, he is not."],
+              answer: "Yes, she is.",
+              explain: "Reponse breve: Yes + pronom + auxiliaire be.",
+            },
+            full: {
+              options: ["Yes, she is from Sydney.", "Yes, she from Sydney.", "No, she is from Sydney.", "Yes, he is from Sydney."],
+              answer: "Yes, she is from Sydney.",
+              explain: "Reponse complete: on reprend toute l'information.",
+            },
+          },
+          {
+            title: "Question: Is he Irish?",
+            short: {
+              options: ["No, he is not.", "No, he does not.", "Yes, he is.", "Yes, he does."],
+              answer: "No, he is not.",
+              explain: "Reponse breve negative: No + pronom + is not.",
+            },
+            full: {
+              options: ["No, he is not Irish.", "No, he is Irish.", "Yes, he is not Irish.", "No, he does not Irish."],
+              answer: "No, he is not Irish.",
+              explain: "Reponse complete negative: No + sujet + is not + complement.",
+            },
+          },
+          {
+            title: "Question: Is her name Ann?",
+            short: {
+              options: ["Yes, it is.", "Yes, she is.", "No, it is not.", "No, she is not."],
+              answer: "Yes, it is.",
+              explain: "Pour 'her name', on repond avec it is.",
+            },
+            full: {
+              options: ["Yes, her name is Ann.", "Yes, her name Ann.", "No, her name is Ann.", "Yes, she name is Ann."],
+              answer: "Yes, her name is Ann.",
+              explain: "Reponse complete avec le nom en entier.",
+            },
+          },
+        ],
+        [
+          {
+            title: "Question: Is he Australian?",
+            short: {
+              options: ["Yes, he is.", "Yes, he does.", "No, he is not.", "No, she is not."],
+              answer: "Yes, he is.",
+              explain: "Reponse breve: Yes + pronom + auxiliaire be.",
+            },
+            full: {
+              options: ["Yes, he is Australian.", "Yes, he Australian.", "No, he is Australian.", "Yes, she is Australian."],
+              answer: "Yes, he is Australian.",
+              explain: "Reponse complete: on reprend toute l'information.",
+            },
+          },
+          {
+            title: "Question: Is she Canadian?",
+            short: {
+              options: ["No, she is not.", "No, she does not.", "Yes, she is.", "Yes, she does."],
+              answer: "No, she is not.",
+              explain: "Reponse breve negative: No + pronom + is not.",
+            },
+            full: {
+              options: ["No, she is not Canadian.", "No, she is Canadian.", "Yes, she is not Canadian.", "No, she does not Canadian."],
+              answer: "No, she is not Canadian.",
+              explain: "Reponse complete negative: No + sujet + is not + complement.",
+            },
+          },
+          {
+            title: "Question: Is his name Bob?",
+            short: {
+              options: ["Yes, it is.", "Yes, he is.", "No, it is not.", "No, he is not."],
+              answer: "Yes, it is.",
+              explain: "Pour 'his name', on repond avec it is.",
+            },
+            full: {
+              options: ["Yes, his name is Bob.", "Yes, his name Bob.", "No, his name is Bob.", "Yes, he name is Bob."],
+              answer: "Yes, his name is Bob.",
+              explain: "Reponse complete avec le nom en entier.",
+            },
+          },
+        ],
+      ];
+
+      const button = document.getElementById("check");
+      const result = document.getElementById("result");
+      const next = document.getElementById("next");
+      const series = document.getElementById("series");
+      const titles = [
+        document.getElementById("q1-title"),
+        document.getElementById("q2-title"),
+        document.getElementById("q3-title"),
+      ];
+      const selects = [
+        document.getElementById("q1s"),
+        document.getElementById("q1f"),
+        document.getElementById("q2s"),
+        document.getElementById("q2f"),
+        document.getElementById("q3s"),
+        document.getElementById("q3f"),
+      ];
+      let current = Math.floor(Math.random() * sets.length);
+
+      const shuffle = (items) => {
+        const copy = items.slice();
+        for (let i = copy.length - 1; i > 0; i -= 1) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [copy[i], copy[j]] = [copy[j], copy[i]];
+        }
+        return copy;
+      };
+
+      const fillSelect = (select, data) => {
+        select.dataset.answer = data.answer;
+        select.dataset.explain = data.explain;
+        select.innerHTML = "";
+        const placeholder = document.createElement("option");
+        placeholder.value = "";
+        placeholder.textContent = "-- Choisir --";
+        select.appendChild(placeholder);
+        shuffle(data.options).forEach((opt) => {
+          const option = document.createElement("option");
+          option.textContent = opt;
+          select.appendChild(option);
+        });
+        const feedback = select.parentElement.querySelector(".feedback");
+        if (feedback) {
+          feedback.textContent = "";
+          feedback.classList.remove("good", "bad");
+        }
+      };
+
+      const renderSet = (index) => {
+        result.textContent = "";
+        series.textContent = `Serie ${index + 1}/3`;
+        sets[index].forEach((item, i) => {
+          titles[i].textContent = item.title;
+          fillSelect(document.getElementById(`q${i + 1}s`), item.short);
+          fillSelect(document.getElementById(`q${i + 1}f`), item.full);
+        });
+      };
+
+      renderSet(current);
+
+      button.addEventListener("click", () => {
+        let score = 0;
+        selects.forEach((select) => {
+          let feedback = select.parentElement.querySelector(".feedback");
+          if (!feedback) {
+            feedback = document.createElement("p");
+            feedback.className = "feedback";
+            select.parentElement.appendChild(feedback);
+          }
+          if (!select.value) {
+            feedback.textContent = "Choisis une reponse.";
+            feedback.classList.remove("good", "bad");
+            return;
+          }
+          if (select.value === select.dataset.answer) {
+            feedback.textContent = "Correct.";
+            feedback.classList.remove("bad");
+            feedback.classList.add("good");
+            score += 1;
+          } else {
+            feedback.textContent = `Faux: ${select.dataset.explain}`;
+            feedback.classList.remove("good");
+            feedback.classList.add("bad");
+          }
+        });
+        result.textContent = `Score: ${score}/${selects.length}`;
+      });
+
+      next.addEventListener("click", () => {
+        let index = current;
+        while (index === current && sets.length > 1) {
+          index = Math.floor(Math.random() * sets.length);
+        }
+        current = index;
+        renderSet(current);
+      });
+    </script>
+  </body>
+</html>

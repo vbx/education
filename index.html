@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Exercices</title>
+    <style>
+      :root {
+        --bg: #0f1115;
+        --ink: #e8e6e3;
+        --muted: #b7b3ad;
+        --accent: #8ab4f8;
+        --card: #171a21;
+        --border: #2a2f3a;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        font-family: "IBM Plex Serif", "Georgia", serif;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      header {
+        padding: 48px 24px 20px;
+        text-align: center;
+      }
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 12px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: var(--card);
+        font-size: 0.9rem;
+        margin-bottom: 12px;
+        color: var(--muted);
+      }
+      h1 {
+        margin: 0 0 8px;
+        font-size: 2.4rem;
+        letter-spacing: 0.02em;
+      }
+      p { margin: 0; color: var(--muted); }
+      .lead {
+        max-width: 540px;
+        margin: 0 auto;
+        font-size: 1rem;
+      }
+      main {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: 24px;
+      }
+      .grid {
+        display: grid;
+        gap: 16px;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--border);
+        padding: 20px;
+        text-decoration: none;
+        color: inherit;
+        transition: transform 160ms ease, border-color 160ms ease;
+        position: relative;
+        overflow: hidden;
+      }
+      .card:hover {
+        transform: translateY(-4px);
+        border-color: var(--accent);
+      }
+      .card h2 { margin: 0 0 6px; font-size: 1.2rem; display: flex; gap: 8px; align-items: center; }
+      .card p { max-width: 26ch; }
+      .icon {
+        display: inline-flex;
+        width: 28px;
+        height: 28px;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        background: #121419;
+        font-size: 1rem;
+        line-height: 1;
+      }
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 10px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: #121419;
+        font-size: 0.85rem;
+        margin-top: 10px;
+        color: var(--muted);
+      }
+      footer {
+        text-align: center;
+        padding: 24px;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="badge"><span aria-hidden="true">&#10022;</span>Exercices simples et locaux</div>
+      <h1>Exercices</h1>
+      <p class="lead">Choisissez une matiere puis un exercice. Tout fonctionne sans serveur.</p>
+    </header>
+    <main>
+      <section class="grid">
+        <a class="card" href="exercises/Anglais/intro.html">
+          <h2><span class="icon" aria-hidden="true">&#9998;</span>Anglais</h2>
+          <p>Exercices de vocabulaire et grammaire.</p>
+          <span class="pill"><span aria-hidden="true">&#9733;</span>Vocabulaire</span>
+        </a>
+      </section>
+    </main>
+    <footer>
+      <p>Astuce: ouvrez ce fichier directement ou lancez Vite pour le dev.</p>
+    </footer>
+  </body>
+</html>

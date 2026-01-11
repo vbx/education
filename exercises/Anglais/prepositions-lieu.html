@@ -32,12 +32,13 @@
         padding: 18px;
         margin-bottom: 16px;
       }
+      .hint { color: var(--muted); margin-top: 6px; font-size: 0.95rem; }
       select {
         width: 100%;
         padding: 10px;
         border: 1px solid var(--border);
-        background: #121419;
-        color: var(--ink);
+        background: #ffffff;
+        color: #111111;
         margin-top: 10px;
       }
       .feedback { color: var(--muted); margin-top: 8px; }
@@ -47,8 +48,8 @@
         padding: 10px 14px;
         font-size: 1rem;
         border: 1px solid var(--border);
-        background: #121419;
-        color: var(--ink);
+        background: #ffffff;
+        color: #111111;
         cursor: pointer;
       }
       button:hover { border-color: var(--accent); }
@@ -66,22 +67,27 @@
     <main>
       <div class="card">
         <strong id="q1-label"></strong>
+        <div class="hint" id="q1-hint"></div>
         <select id="q1"></select>
       </div>
       <div class="card">
         <strong id="q2-label"></strong>
+        <div class="hint" id="q2-hint"></div>
         <select id="q2"></select>
       </div>
       <div class="card">
         <strong id="q3-label"></strong>
+        <div class="hint" id="q3-hint"></div>
         <select id="q3"></select>
       </div>
       <div class="card">
         <strong id="q4-label"></strong>
+        <div class="hint" id="q4-hint"></div>
         <select id="q4"></select>
       </div>
       <div class="card">
         <strong id="q5-label"></strong>
+        <div class="hint" id="q5-hint"></div>
         <select id="q5"></select>
       </div>
       <div class="actions">
@@ -98,30 +104,35 @@
             label: "The library is ___ the cafeteria and the gym.",
             options: ["between", "under", "behind", "on"],
             answer: "between",
+            french: "entre",
             explain: "Between s'utilise pour deux lieux: entre A et B.",
           },
           {
             label: "The playground is ___ the school.",
             options: ["in front of", "under", "between", "behind"],
             answer: "in front of",
+            french: "devant",
             explain: "In front of = devant, opposite de behind.",
           },
           {
             label: "The gym is ___ the library.",
             options: ["next to", "behind", "in", "on"],
             answer: "next to",
+            french: "a cote de",
             explain: "Next to = a cote de.",
           },
           {
             label: "The car park is ___ the school building.",
             options: ["behind", "on", "between", "under"],
             answer: "behind",
+            french: "derriere",
             explain: "Behind = derriere.",
           },
           {
             label: "The art room is ___ the first floor.",
             options: ["on", "under", "between", "in front of"],
             answer: "on",
+            french: "sur",
             explain: "On the first floor: on + etage.",
           },
         ],
@@ -130,30 +141,35 @@
             label: "The cafeteria is ___ the gym and the library.",
             options: ["between", "under", "behind", "on"],
             answer: "between",
+            french: "entre",
             explain: "Between s'utilise pour deux lieux.",
           },
           {
             label: "The main entrance is ___ the school.",
             options: ["in front of", "under", "between", "behind"],
             answer: "in front of",
+            french: "devant",
             explain: "In front of = devant.",
           },
           {
             label: "The music room is ___ the art room.",
             options: ["next to", "behind", "in", "on"],
             answer: "next to",
+            french: "a cote de",
             explain: "Next to = a cote de.",
           },
           {
             label: "The stadium is ___ the school.",
             options: ["behind", "on", "between", "under"],
             answer: "behind",
+            french: "derriere",
             explain: "Behind = derriere.",
           },
           {
             label: "The library is ___ the ground floor.",
             options: ["on", "under", "between", "in front of"],
             answer: "on",
+            french: "sur",
             explain: "On + floor.",
           },
         ],
@@ -162,30 +178,35 @@
             label: "The science lab is ___ the gym and the cafeteria.",
             options: ["between", "under", "behind", "on"],
             answer: "between",
+            french: "entre",
             explain: "Between = entre deux lieux.",
           },
           {
             label: "The car park is ___ the school.",
             options: ["in front of", "under", "between", "behind"],
             answer: "in front of",
+            french: "devant",
             explain: "In front of = devant.",
           },
           {
             label: "The library is ___ the classrooms.",
             options: ["next to", "behind", "in", "on"],
             answer: "next to",
+            french: "a cote de",
             explain: "Next to = a cote de.",
           },
           {
             label: "The art room is ___ the hall.",
             options: ["behind", "on", "between", "under"],
             answer: "behind",
+            french: "derriere",
             explain: "Behind = derriere.",
           },
           {
             label: "The gym is ___ the first floor.",
             options: ["on", "under", "between", "in front of"],
             answer: "on",
+            french: "sur",
             explain: "On + floor.",
           },
         ],
@@ -201,6 +222,13 @@
         document.getElementById("q3-label"),
         document.getElementById("q4-label"),
         document.getElementById("q5-label"),
+      ];
+      const hints = [
+        document.getElementById("q1-hint"),
+        document.getElementById("q2-hint"),
+        document.getElementById("q3-hint"),
+        document.getElementById("q4-hint"),
+        document.getElementById("q5-hint"),
       ];
       const selects = [
         document.getElementById("q1"),
@@ -225,6 +253,7 @@
         series.textContent = `Serie ${index + 1}/3`;
         sets[index].forEach((item, i) => {
           labels[i].textContent = item.label;
+          hints[i].textContent = `Indice: ${item.french}`;
           selects[i].dataset.answer = item.answer;
           selects[i].dataset.explain = item.explain;
           selects[i].innerHTML = "";

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Les Mythes en Jeux — Thésée, Persée, Hercule</title>
+<style>
+  :root{--bg:#f3f7fb;--card:#ffffff;--accent:#2b7a78;--muted:#6b6b6b}
+  body{font-family: "Segoe UI", Roboto, Arial, sans-serif;background:linear-gradient(#eef6fb,#f3f7fb);margin:0;color:#123}
+  header{background:var(--accent);color:#fff;padding:18px 24px}
+  header h1{margin:0;font-size:20px}
+  main{display:flex;gap:18px;padding:18px}
+  nav{width:220px}
+  nav button{display:block;width:100%;margin-bottom:8px;padding:10px;border-radius:8px;border:0;background:#fff;color:var(--accent);cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+  section.card{background:var(--card);padding:14px;border-radius:12px;box-shadow:0 6px 18px rgba(17,24,39,0.06);flex:1;min-height:420px}
+  .hint{color:var(--muted);font-size:13px;margin-top:8px}
+  .controls{display:flex;gap:8px;margin-top:10px}
+  button.small{padding:8px;border-radius:8px;border:0;background:var(--accent);color:#fff;cursor:pointer}
+  button.alt{background:#9fd3e1;color:#123}
+  .log{background:#f7fafb;border:1px dashed #e0e7e9;padding:8px;border-radius:8px;font-size:14px;min-height:50px}
+  /* Quiz */
+  .question{margin-bottom:12px}
+  .choices button{display:block;width:100%;text-align:left;padding:8px;margin:6px 0;border-radius:8px;border:1px solid #e1e8ea;background:#fff;cursor:pointer}
+  .correct{background:#dff3e6;border-color:#7bd18b}
+  .wrong{background:#ffe7e7;border-color:#ff9a9a}
+  footer{padding:12px;text-align:center;color:var(--muted);font-size:13px}
+  @media (max-width:900px){main{flex-direction:column}nav{width:100%}}
+</style>
+</head>
+<body>
+<header>
+  <h1>Les Mythes en Jeux — Thésée, Persée, Héraclès</h1>
+  <div class="hint">Explorateur d'histoires et quiz — conçu pour un enfant de 10 ans.</div>
+</header>
+<main>
+  <nav>
+    <button id="goStory">Explorateur d'histoires</button>
+    <button id="goQuiz">Quiz mythes</button>
+    <button id="goHelp">Mode d'emploi</button>
+  </nav>
+
+  <section id="story" class="card" style="display:block">
+    <h2>Explorateur d'histoires</h2>
+    <p>Choisis un extrait puis clique sur "Écouter" pour que l'ordinateur lise le texte (si ton navigateur le permet).</p>
+
+    <select id="excerptSelect" style="width:100%;padding:8px;margin-bottom:10px;border-radius:8px">
+      <option value="thesee">Thésée et le Minotaure (extraits)</option>
+      <option value="persee">Persée et Méduse (extrait)</option>
+      <option value="hercule">Héraclès et la biche de Cérynie (extrait)</option>
+    </select>
+
+    <div id="excerptText" style="white-space:pre-wrap;background:#fbfeff;padding:12px;border-radius:8px;border:1px solid #e7f0f2;min-height:220px">
+Thésée, prince courageux, arrive en Crète. Grâce au fil d’Ariane, il entre dans le labyrinthe, affronte le Minotaure et le tue. Il oublie parfois de changer les voiles blanches, ce qui cause la tristesse du roi Égée.
+
+Persée, aidé par Athéna et Hermès, utilise un bouclier comme miroir pour voir Méduse sans la regarder directement. Il la décapite et met sa tête dans un sac pour ne pas être pétrifié.
+
+Héraclès doit rapporter vivant la biche de Cérynie — un animal aux sabots d’airain et aux cornes d’or — pour prouver sa force sans blesser l’animal.
+    </div>
+
+    <div class="controls">
+      <button id="speakBtn" class="small">Écouter</button>
+      <button id="copyBtn" class="small alt">Copier le texte</button>
+      <button id="fillExercise" class="small" style="background:#ffb86b">Exercice : écrire 5 lignes</button>
+    </div>
+
+    <p class="hint">Astuce : change d'extrait dans la liste pour lire d'autres passages.</p>
+
+    <div id="exercise" style="margin-top:12px;display:none">
+      <h3>Exercice d'écriture</h3>
+      <p>Écris une suite de 5 lignes au présent en t'inspirant de l'extrait sélectionné :</p>
+      <textarea id="studentText" style="width:100%;height:110px;padding:8px;border-radius:8px;border:1px solid #e7f0f2"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px">
+        <button id="saveText" class="small">Sauvegarder (local)</button>
+        <button id="clearText" class="small" style="background:#f6a6b8">Effacer</button>
+      </div>
+      <div id="savedMsg" class="hint" style="margin-top:8px"></div>
+    </div>
+  </section>
+
+  <section id="quiz" class="card" style="display:none">
+    <h2>Quiz : Les héros mythiques</h2>
+    <div id="quizArea">
+      <!-- Questions will be injected here -->
+    </div>
+    <div style="margin-top:10px">
+      <button id="startQuiz" class="small">Commencer le quiz</button>
+      <button id="resetQuiz" class="small" style="background:#f6a6b8">Réinitialiser</button>
+      <div id="quizResult" style="margin-top:10px;font-weight:bold"></div>
+    </div>
+  </section>
+
+  <section id="help" class="card" style="display:none">
+    <h2>Mode d'emploi</h2>
+    <ul>
+      <li>Explorateur : choisis un extrait, lis ou écoute le texte, puis fais l'exercice d'écriture.</li>
+      <li>Quiz : réponds aux questions. Le jeu te dit si tu as bien répondu et explique la bonne réponse.</li>
+      <li>Toutes les fonctions fonctionnent hors-ligne dans ton navigateur (pas besoin d'Internet après ouverture).</li>
+    </ul>
+    <p class="hint">Le jeu est en français et conçu pour être simple et amusant.</p>
+  </section>
+</main>
+
+<footer>Créé à partir de ton texte — amuse-toi bien ! (Thésée, Persée, Héraclès)</footer>
+
+<script>
+/* NAVIGATION */
+const sections = { story: document.getElementById('story'), quiz: document.getElementById('quiz'), help: document.getElementById('help') };
+document.getElementById('goStory').onclick = ()=>show('story');
+document.getElementById('goQuiz').onclick = ()=>show('quiz');
+document.getElementById('goHelp').onclick = ()=>show('help');
+function show(name){ for(let s in sections) sections[s].style.display = (s===name?'block':'none'); }
+
+/* EXPLORATEUR */
+const excerpts = {
+  thesee: `Thésée, prince courageux, arrive en Crète. Grâce au fil d’Ariane, il entre dans le labyrinthe, affronte le Minotaure et le tue. Il oublie parfois de changer les voiles blanches, ce qui cause la tristesse du roi Égée.`,
+  persee: `Persée, aidé par Athéna et Hermès, utilise un bouclier comme miroir pour voir Méduse sans la regarder directement. Il la décapite et met sa tête dans un sac pour ne pas être pétrifié.`,
+  hercule: `Héraclès doit rapporter vivant la biche de Cérynie — un animal aux sabots d’airain et aux cornes d’or — pour prouver sa force sans blesser l’animal.`
+};
+const select = document.getElementById('excerptSelect');
+const excerptText = document.getElementById('excerptText');
+select.onchange = ()=> excerptText.textContent = excerpts[select.value];
+
+document.getElementById('speakBtn').onclick = ()=>{
+  const text = excerptText.textContent;
+  if('speechSynthesis' in window){
+    speechSynthesis.cancel();
+    const u = new SpeechSynthesisUtterance(text);
+    u.lang='fr-FR';
+    u.rate = 0.95;
+    speechSynthesis.speak(u);
+  } else alert('La synthèse vocale n’est pas disponible sur ce navigateur.');
+};
+document.getElementById('copyBtn').onclick = async ()=>{
+  try{ await navigator.clipboard.writeText(excerptText.textContent); alert('Texte copié !'); } catch(e){ alert('Impossible de copier.'); }
+};
+
+/* Exercise (simple local save) */
+document.getElementById('fillExercise').onclick = ()=>{
+  document.getElementById('exercise').style.display = 'block';
+  document.getElementById('studentText').value = '';
+  document.getElementById('savedMsg').textContent = '';
+};
+document.getElementById('saveText').onclick = ()=>{
+  const key = 'jeu_mythes_exo';
+  const val = document.getElementById('studentText').value.trim();
+  if(!val){ alert('Écris d\'abord ton texte (5 lignes environ).'); return; }
+  localStorage.setItem(key, val);
+  document.getElementById('savedMsg').textContent = 'Exercice sauvegardé en local. Tu peux le retrouver sur cet ordinateur.';
+};
+document.getElementById('clearText').onclick = ()=>{
+  document.getElementById('studentText').value = '';
+  document.getElementById('savedMsg').textContent = '';
+};
+
+/* QUIZ */
+const quizQuestions = [
+  {
+    q: "Qui est enfermé dans le labyrinthe en Crète ?",
+    choices: ["Le Minotaure","Le Cyclope","Méduse","Le dragon"], a:0,
+    explain: "Le Minotaure est le monstre mi-homme mi-taureau enfermé dans le labyrinthe."
+  },
+  {
+    q: "Que donne Ariane à Thésée pour l'aider ?",
+    choices: ["Un fil de laine","Un bouclier","Des sandales ailées","Une épée magique"], a:0,
+    explain: "Ariane donne à Thésée un fil (le fil d'Ariane) pour retrouver la sortie."
+  },
+  {
+    q: "Comment Persée regarde-t-il Méduse sans être pétrifié ?",
+    choices: ["Avec son bouclier en miroir","En fermant les yeux","Avec des lunettes","En la regardant directement"], a:0,
+    explain: "Persée utilise le bouclier comme miroir pour voir le reflet de Méduse."
+  },
+  {
+    q: "Pourquoi Acrisios met-il Danaé et Persée dans un coffre ?",
+    choices: ["Il a peur que son petit-fils le tue","Pour leur faire une surprise","Pour voyager","Parce qu'ils volaient"], a:0,
+    explain: "Acrisios avait peur d'une prophétie disant que son petit-fils le tuerait."
+  },
+  {
+    q: "Héraclès doit rapporter la biche de Cérynie : qu'a-t-elle de spécial ?",
+    choices: ["Des sabots d’airain et des cornes d’or","Elle peut parler","Elle vole","Elle change de couleur"], a:0,
+    explain: "La biche a des sabots d'airain et des cornes d'or ; Héraclès doit la capturer vivante."
+  }
+];
+
+let quizIndex = 0, score = 0;
+const quizArea = document.getElementById('quizArea');
+function renderQuestion(i){
+  const Q = quizQuestions[i];
+  quizArea.innerHTML = '';
+  const d = document.createElement('div'); d.className='question';
+  const h = document.createElement('div'); h.textContent = `Question ${i+1} / ${quizQuestions.length} : ${Q.q}`;
+  d.appendChild(h);
+  const choices = document.createElement('div'); choices.className='choices';
+  Q.choices.forEach((c,idx)=>{
+    const b = document.createElement('button'); b.textContent = c;
+    b.onclick = ()=>{ handleAnswer(idx); };
+    choices.appendChild(b);
+  });
+  d.appendChild(choices);
+  quizArea.appendChild(d);
+}
+function handleAnswer(idx){
+  const Q = quizQuestions[quizIndex];
+  const buttons = document.querySelectorAll('#quizArea .choices button');
+  buttons.forEach((b,i)=>{ b.disabled=true; if(i===Q.a) b.classList.add('correct'); if(i===idx && i!==Q.a) b.classList.add('wrong'); });
+  const res = document.getElementById('quizResult');
+  if(idx===Q.a){ score++; res.textContent = "Bonne réponse ! " + Q.explain; } else { res.textContent = "Réponse : " + Q.choices[Q.a] + ". " + Q.explain; }
+  // next
+  setTimeout(()=>{ quizIndex++; if(quizIndex<quizQuestions.length) { renderQuestion(quizIndex); res.textContent=''; } else finishQuiz(); }, 2200);
+}
+function finishQuiz(){
+  quizArea.innerHTML = `<div>Tu as obtenu ${score} bonnes réponses sur ${quizQuestions.length}.</div>`;
+  const msg = score===quizQuestions.length ? "Excellent ! Tu connais bien ces mythes." : "Bravo ! Tu peux rejouer pour t'améliorer.";
+  document.getElementById('quizResult').textContent = msg;
+}
+document.getElementById('startQuiz').onclick = ()=>{
+  quizIndex=0; score=0; document.getElementById('quizResult').textContent=''; renderQuestion(0);
+};
+document.getElementById('resetQuiz').onclick = ()=>{ quizIndex=0; score=0; quizArea.innerHTML=''; document.getElementById('quizResult').textContent='Quiz réinitialisé.'; };
+
+/* Start on story by default */
+show('story');
+</script>
+</body>
+</html>
